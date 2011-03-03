@@ -113,24 +113,24 @@ set dictionary=~/.pandoc/citationkeys.dict
 " Generate html and open in default html viewer
 "
 if !exists(':Mh')
-	:command Mh !out="%";out="${out\%.*}.html";pandoc -t html -sS -o "$out" %;open "$out" 
+	:command Mh !out="%";out="${out\%.*}.html";pandoc -t html -sS -o "$out" %;open "$out"
 endif
 "
 "Generate pdf and open in default pdf viewer
 "
 if !exists(':Mp')
-  :command Mp !out="%";out="${out\%.*}.pdf";markdown2pdf -o "$out" %;open "$out" 
+  :command Mp !out="%";out="${out\%.*}.pdf";markdown2pdf -o "$out" %;open "$out"
 
 endif
 "
 "Generate odt and open in default odt viewer
 "
 if !exists(':Mo')	
-  :command Mo !out="%";out="${out\%.*}.odt";pandoc -t odt -sS -o "$out" %;open "$out" 
+  :command Mo !out="%";out="${out\%.*}.odt";pandoc -t odt -sS -o "$out" %;open "$out"
 endif
 "
 "Easy to remember <leader> mappings for these conversion commands
 "
-map <silent> <Leader>html :Mh
-map <silent> <LEADER>pdf :Mp
-map <silent> <LEADER>odt :Mo
+map <silent> <Leader>html :Mh<CR>
+map <silent> <LEADER>pdf :Mp<CR>
+map <silent> <LEADER>odt :Mo<CR>
