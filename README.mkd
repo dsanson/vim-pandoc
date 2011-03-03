@@ -1,1 +1,0 @@
-Pandoc for Vim made by Jeremy Schultz and Githubbed by wunki.
