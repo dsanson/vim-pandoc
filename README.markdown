@@ -53,11 +53,11 @@ These are also mapped to
 It should be trivial to expand these commands to include other formats.
 These are the formats I use most often.
 
-Note that as written, these commands depend on OS X's 'open' command.
-Linux users will want to edit them to use the 'xdg-open' command (the
-commands are defined toward the end of ftplugin/pandoc.vim). But really,
-it should be rewritten to figure out what to use based on platform.
+Note that as written, these commands depend on OS X's 'open' command and assume
+you are using bash. Linux users will want to edit them to use the 'xdg-open'
+command (the commands are defined toward the end of ftplugin/pandoc.vim). But
+really, it should be rewritten to figure out what to use based on platform.
 Maybe I'll do that sometime. Maybe someone else will do it first.
 
 Also note that you can tweak the options passed to pandoc by editing
-ftplugin/pandoc.vim.
+ftplugin/pandoc.vim. And there are alternate commented out commands that rely on custom external wrapper scripts. (You'll have to roll your own!)
