@@ -129,6 +129,10 @@ syn match  pdcListItem  /\s*(\?\u[\)]\s\+/ contained nextgroup=pdcListSkipNL,pdc
 "   Order list, uppercase letters, special case using '.' and two or more spaces
 syn match  pdcListItem  /\s*\u\.\([ ]\{2,}\|\t\+\)/ contained nextgroup=pdcListSkipNL,pdcListCont skipnl
 
+"  Numbered Example list (doesn't handle hyphens or underscores in labels) 
+syn match  pdcListItem  /\s*(\?@\a*[\.)]\s\+/ contained nextgroup=pdcListSkipNL,pdcListCont skipnl
+
+
 
 """""""""""""""""""""""""""""""""""""""
 " Horizontal Rules:
