@@ -64,72 +64,79 @@ au BufWinEnter * silent loadview
 " There must be a better way to do this. I've generated a list of citekeys from
 " my bibtex file and put it in citationkeys.dict.
 "
-set dictionary=~/.pandoc/citationkeys.dict
+ set dictionary=~/.pandoc/citationkeys.dict
 "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" # Autocomplete citationkeys using function
+"
+"
+
+"fun! CompleteKeys(findstart, base)
+  "if a:findstart
+	"" locate the start of the word
+	"let line = getline('.')
+	"let start = col('.') - 1
+	"while start > 0 && line[start - 1] =~ '\a'
+	  "let start -= 1
+	"endwhile
+	"return start
+  "else
+	"let res = system('bibkey -v ' . a:base) 
+	"return res
+  "endif
+"endfun
+"set completefunc=CompleteKeys
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Quick conversion into and viewing of html, pdf, and odt
 "
 " Two options here.
 "
-" ## Option 1: Call External Wrapper Scripts
+" ## Option 1: Call External Wrapper Script
 "
-" First, three simple commands that rely on three external wrapper scripts:
-" 'html', 'pdf', and 'odt'. You'll need to supply these scripts on your own;
-" mine are not ready for primetime. The advantage is that you can set all your
-" defaults just as you like, and the conversions will be available both in vim
-" and from the cli.
+" Simple commands that rely on my "pd" wrapper script, which can be
+" found here:
 "
-" To use these, uncomment the following, and comment out the alternative
-" definitions provided under Option 2 below.
+" 	https://gist.github.com/857619
+"
+" The advantage is that you can set all your defaults once,
+" and the conversions are available both in vim and from the cli.
 "
 " Generate html and open in default html viewer
-"
-"if !exists(':Mh')
-	":command Mh !html %
-"endif
-"
-" Generate pdf and open in default pdf viewer
-"
-"if !exists(':Mp')
-  ":command Mp !pdf %
-"endif
-"
-" Generate odt and open in default odt viewer
-;"
-"if !exists(':Mo')	
-  ":command Mo !odt %
-"endif
-"
+
+	:command! Mh !pd html open %
+
+" Generate pdf using citeproc and open in default pdf viewer
+
+	:command! Mp !pd bib pdf open %
+
+" Generate odt using citeproc and open in default odt viewer
+
+	:command! Mo !pd bib odt open %
+
 " ## Option 2: Call pandoc directly
 "
-" Three more complicated pandoc commands that don't rely on custom wrapper
-" scripts. The advantage is that you don't need to provide those external
-" scripts. The disadvantage is that you have to manage all the cli options
-" here.
+" Three more complicated pandoc commands that don't rely on pd. The advantage
+" is that you don't need to provide those external scripts. The disadvantage
+" is that you have to manage all the cli options here.
 "
 " Note that these commands depend on OS X's "open" command. Linux users will
-" want to rewrite them to use the xdg-open command. 
+" want to rewrite them to use the "xdg-open" command. 
 "
 " Generate html and open in default html viewer
-"
-if !exists(':Mh')
-	:command Mh !out="%";out="${out\%.*}.html";pandoc -t html -sS -o "$out" %;open "$out"
-endif
-"
-"Generate pdf and open in default pdf viewer
-"
-if !exists(':Mp')
-  :command Mp !out="%";out="${out\%.*}.pdf";markdown2pdf -o "$out" %;open "$out"
 
-endif
-"
-"Generate odt and open in default odt viewer
-"
-if !exists(':Mo')	
-  :command Mo !out="%";out="${out\%.*}.odt";pandoc -t odt -sS -o "$out" %;open "$out"
-endif
-"
-"Easy to remember <leader> mappings for these conversion commands
+	:command! Mhd !out="%";out="${out\%.*}.html";pandoc -t html -sS -o "$out" %;open "$out"
+
+" Generate pdf and open in default pdf viewer
+
+  	:command! Mpd !out="%";out="${out\%.*}.pdf";markdown2pdf -o "$out" %;open "$out"
+
+" Generate odt and open in default odt viewer
+
+	:command Mod !out="%";out="${out\%.*}.odt";pandoc -t odt -sS -o "$out" %;open "$out"
+
+" Easy to remember <leader> mappings for these conversion commands. I've
+" mapped these to the commands that depend on "pd".
 "
 map <silent> <Leader>html :Mh<CR>
 map <silent> <LEADER>pdf :Mp<CR>

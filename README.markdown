@@ -35,14 +35,17 @@ Briefly, it sets soft word wrapping, eliminates the extra space that vim
 likes to insert when joining lines, enables folding of ATX style
 sections, implements very crude dictionary-based autocompletion of
 citations (you'll need to generate the dictionary yourself), and
-provides three basic commands for quick conversion of html, pdf, and odt
+provides some basic commands for quick conversion of html, pdf, and odt
 files.
 
-The commands are
+The conversion commands come in two flavors. The first flavor depends on [an
+external wrapper script](https://gist.github.com/857619).
+
+The first commands are
 
     :Mh     converts to html, opens in default html browser
-    :Mp     converts to pdf, opens in default pdf viewer
-    :Mo     converts to odt, opens in default odt viewer
+    :Mp     converts to pdf using citeproc, opens in default pdf viewer
+    :Mo     converts to odt using citeproc, opens in default odt viewer
 
 These are also mapped to
 
@@ -50,14 +53,19 @@ These are also mapped to
     <Leader>pdf
     <Leader>odt
 
+The second flavor of commands call pandoc directly, and so don't depend on
+the external wrapper script. These are
+
+	:Mhd	converts to html, opens in default html browser
+	:Mhp	converts to pdf, opens in default pdf viewer
+	:Mop	converts to odt, opens in default odt viewer
+
 It should be trivial to expand these commands to include other formats.
 These are the formats I use most often.
 
-Note that as written, these commands depend on OS X's 'open' command and assume
-you are using bash. Linux users will want to edit them to use the 'xdg-open'
-command (the commands are defined toward the end of ftplugin/pandoc.vim). But
+Note that as written, all of these commands depend on OS X's 'open' command. 
+Linux users will want to edit them to use the 'xdg-open' command (the commands
+are defined toward the end of ftplugin/pandoc.vim). But
 really, it should be rewritten to figure out what to use based on platform.
 Maybe I'll do that sometime. Maybe someone else will do it first.
 
-Also note that you can tweak the options passed to pandoc by editing
-ftplugin/pandoc.vim. And there are alternate commented out commands that rely on custom external wrapper scripts. (You'll have to roll your own!)
