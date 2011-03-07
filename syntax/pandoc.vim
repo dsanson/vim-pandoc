@@ -1,21 +1,17 @@
 " Vim syntax file
 " Language:	Pandoc (superset of Markdown)
-" Maintainer:	Jeremy Schultz <taozhyn@gmail.com> 
+" Maintainer:	Jeremy Schultz <taozhyn@gmail.com>
+" HackedUpBy:	David Sanson
 " URL:		
-" Version:	2
-" Changes:	2008-11-04	
-"		-   Fixed an issue with Block elements (header) not being highlighted when 
-"		    placed on the first or second line of the file
-"		-   Fixed multi line HTML comment block
-"		-   Fixed lowercase list items
-"		-   Fixed list items gobbling to many empty lines
-"		-   Added highlight support to identify newline (2 spaces)
-"		-   Fixed HTML highlight, ignore if the first character in the
-"		    angle brackets is not a letter 
-"		-   Fixed Emphasis highlighting when it contained multiple
-"		    spaces
+" Version:	2.1
+" Changes: 2011-03-05 (David Sanson)	
+"	- Added support for Numbered Examples
 " Remark:	Uses HTML and TeX syntax file
-
+" TODO:
+" 	- Add support for definition lists
+" 	- Add support for citations
+" 	- Fix bug with multiline footnotes
+"
 if version < 600
   syntax clear
 elseif exists("b:current_syntax")
@@ -151,7 +147,7 @@ syn match pdcHRule  /\s\{0,3}\(\*\s*\)\{3,}\n/	contained nextgroup=pdcHRule
 """""""""""""""""""""""""""""""""""""""
 " Links:
 
-"   Link Text 
+"   Link Text
 syn match pdcLinkText /\[\zs[^\]]*\ze\]/ contains=@Spell
 
 "   Link ID
