@@ -88,56 +88,126 @@ au BufWinEnter * silent loadview
 "set completefunc=CompleteKeys
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" # Quick conversion into and viewing of html, pdf, and odt
+" # Commands that call Pandoc
 "
-" Two options here.
+" ## Simple Commands
 "
-" ## Option 1: Call External Wrapper Script
+" Markdown tidy with hard wraps
+
+	:command! MarkdownTidyWrap %!pandoc -t markdown
+
+" Markdown tidy without hard wraps
+
+	:command! MarkdownTidy %!pandoc -t markdown --no-wrap
+
+" ## Complex commands
+
+" Two options here: commands the rely on an external wrapper script, "pd", and
+" commands that don't. 
 "
-" Simple commands that rely on my "pd" wrapper script, which can be
-" found here:
+" ### Commands that rely on "pd"
+"
+" I've written a bash wrapper script, "pd", which can be found here:
 "
 " 	https://gist.github.com/857619
 "
-" The advantage is that you can set all your defaults once,
-" and the conversions are available both in vim and from the cli.
+" "pd" provides some shortcuts for common tasks, an easy way to 
+" set default conversion options. For details, read the comments in the
+" script or try `pd help`.
 "
+" The advantage of calling "pd" here rather than pandoc is that you can
+" set all your defaults once, and the conversions are available both in 
+" vim and from the cli.
+"
+" Below are some commands I use regularly. It should be easy to expand this
+" list to suit your needs.
+"
+" Generate html (will be saved as filename.html)
+
+	:command! MarkdownHtmlpd	!pd html %
+
 " Generate html and open in default html viewer
 
-	:command! Mh !pd html open %
+	:command! MarkdownHtmlOpenpd !pd html open %
 
 " Generate pdf using citeproc and open in default pdf viewer
 
-	:command! Mp !pd bib pdf open %
+	:command! MarkdownPdfCiteOpenpd !pd bib pdf open %
 
 " Generate odt using citeproc and open in default odt viewer
 
-	:command! Mo !pd bib odt open %
+	:command! MarkdownOdtCiteOpenpd !pd bib odt open %
 
-" ## Option 2: Call pandoc directly
+" ### Commands that call pandoc directly
 "
-" Three more complicated pandoc commands that don't rely on pd. The advantage
-" is that you don't need to provide those external scripts. The disadvantage
-" is that you have to manage all the cli options here.
+" Here are three more complicated pandoc commands that don't rely on pd. The
+" advantage is that you don't need to provide those external scripts. The
+" disadvantage is that you have to manage all the cli options here.
 "
 " Note that these commands depend on OS X's "open" command. Linux users will
 " want to rewrite them to use the "xdg-open" command. 
 "
 " Generate html and open in default html viewer
 
-	:command! Mhd !out="%";out="${out\%.*}.html";pandoc -t html -sS -o "$out" %;open "$out"
+	:command! MarkdownHtmlOpen !out="%";out="${out\%.*}.html";pandoc -t html -sS -o "$out" %;open "$out"
 
 " Generate pdf and open in default pdf viewer
 
-  	:command! Mpd !out="%";out="${out\%.*}.pdf";markdown2pdf -o "$out" %;open "$out"
+  	:command! MarkdownPdfOpen !out="%";out="${out\%.*}.pdf";markdown2pdf -o "$out" %;open "$out"
 
 " Generate odt and open in default odt viewer
 
-	:command Mod !out="%";out="${out\%.*}.odt";pandoc -t odt -sS -o "$out" %;open "$out"
-
-" Easy to remember <leader> mappings for these conversion commands. I've
-" mapped these to the commands that depend on "pd".
+	:command MarkdownOdtOpen !out="%";out="${out\%.*}.odt";pandoc -t odt -sS -o "$out" %;open "$out"
 "
-map <silent> <Leader>html :Mh<CR>
-map <silent> <LEADER>pdf :Mp<CR>
-map <silent> <LEADER>odt :Mo<CR>
+" # Some suggested <Leader> mappings 
+"
+" It is bad form to put <Leader> mappings in ftplugins. Here are the mappings I
+" have in my .vimrc. If you like them, you can either copy them to your vimrc
+" or uncomment them here.
+"
+"map <silent> <Leader>html :MarkdownHtmlOpenpd<CR>
+"map <silent> <LEADER>pdf :MarkdownPdfCiteOpenpd<CR>
+"map <silent> <LEADER>odt :MarkdownOdtCiteOpenpd<CR>
+"
+" While I'm at it, here are a few more functions mappings that are useful when
+" editing pandoc files. 
+"
+" Open link in browser (OS X only; based on Gruber's url regex)
+"
+" (This isn't very pandoc-specific, but I use it in the next mapping below.)
+"
+"ruby << EOF
+"  def open_uri
+"    re = %r{(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))}
+
+"    line = VIM::Buffer.current.line
+
+"    if url = line[re]
+"      system("open", url)
+"      VIM::message(url)
+"    else
+"      VIM::message("No URI found in line.")
+"    end
+"  end
+"EOF
+
+"if !exists("*OpenURI")
+"  function! OpenURI()
+"    :ruby open_uri
+"  endfunction
+"endif
+"map <Leader>w :call OpenURI()<CR>
+
+"" Open reference link in browser (depends on above mapping of <LEADER>w)
+"map <Leader>wr ya[#<LEADER>w*
+
+"" Jump forward to existing reference link (or footnote link)
+"map <Leader>fr ya[#E
+
+"" Jump back to existing reference link (or fn link)
+"map <Leader>br {jwya[*E
+
+"" Add new reference link (or footnote link) after current paragraph. (This
+"" works better than the snipmate snippet for doing this.)
+
+"map <Leader>nr ya[o<CR><ESC>p$a: 
