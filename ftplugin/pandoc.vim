@@ -157,7 +157,7 @@ au BufWinEnter * silent loadview
 
 " Generate odt and open in default odt viewer
 
-	:command MarkdownOdtOpen !out="%";out="${out\%.*}.odt";pandoc -t odt -sS -o "$out" %;open "$out"
+	:command! MarkdownOdtOpen !out="%";out="${out\%.*}.odt";pandoc -t odt -sS -o "$out" %;open "$out"
 "
 " # Some suggested <Leader> mappings 
 "
