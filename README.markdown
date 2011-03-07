@@ -18,7 +18,7 @@ The syntax file is by jeremy schultz (found
 [here](http://www.vim.org/scripts/script.php?script_id=2389)) as
 githubbed by [wunki](https://github.com/wunki/vim-pandoc). It is a bit
 out of date: I don't think it understands definition lists, numbered
-example lists, or citations. I've renamed it to 'pandoc.vim'.
+example lists, or citations. It seems to get confused by footnotes with multiple paragraphs. I've renamed it to 'pandoc.vim'.
 
 The snippets file, for use with
 [snipMate](http://www.vim.org/scripts/script.php?script_id=2540), is a
@@ -32,40 +32,20 @@ ftplugin/pandoc.vim is fairly well-commented. Take a look at it to see
 what the plugin does in detail.
 
 Briefly, it sets soft word wrapping, eliminates the extra space that vim
-likes to insert when joining lines, enables folding of ATX style
-sections, implements very crude dictionary-based autocompletion of
-citations (you'll need to generate the dictionary yourself), and
-provides some basic commands for quick conversion of html, pdf, and odt
-files.
+likes to insert when joining lines, sets equalprg to "pandoc -t markdown
+--no-wrap", enables folding of ATX style sections, implements very crude
+dictionary-based autocompletion of citations (you'll need to generate the
+dictionary yourself), and provides some basic commands for quick conversion to 
+html, pdf, and odt.
 
 The conversion commands come in two flavors. The first flavor depends on [an
-external wrapper script](https://gist.github.com/857619).
+external wrapper script](https://gist.github.com/857619). The second flavor of commands call pandoc directly. It should be trivial to expand these commands to include other formats.
 
-The first commands are
-
-    :Mh     converts to html, opens in default html browser
-    :Mp     converts to pdf using citeproc, opens in default pdf viewer
-    :Mo     converts to odt using citeproc, opens in default odt viewer
-
-These are also mapped to
-
-    <Leader>html
-    <Leader>pdf
-    <Leader>odt
-
-The second flavor of commands call pandoc directly, and so don't depend on
-the external wrapper script. These are
-
-	:Mhd	converts to html, opens in default html browser
-	:Mhp	converts to pdf, opens in default pdf viewer
-	:Mop	converts to odt, opens in default odt viewer
-
-It should be trivial to expand these commands to include other formats.
-These are the formats I use most often.
-
-Note that as written, all of these commands depend on OS X's 'open' command. 
+Note that as written, all of these commands depend on OS X's 'open' command.
 Linux users will want to edit them to use the 'xdg-open' command (the commands
-are defined toward the end of ftplugin/pandoc.vim). But
-really, it should be rewritten to figure out what to use based on platform.
-Maybe I'll do that sometime. Maybe someone else will do it first.
+are defined toward the end of ftplugin/pandoc.vim). But really, it should be
+rewritten to figure out what to use based on platform. Maybe I'll do that
+sometime. Maybe someone else will do it first.
+
+At the end of the plugin, there are several commented-out lines containing suggested <leader> mappings. These are things that are relevant to pandoc, but that I keep in my .vimrc.
 

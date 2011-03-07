@@ -23,6 +23,12 @@ vnoremap k gk
 set nojoinspaces
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" # Use pandoc to tidy up text
+
+set equalprg=pandoc\ -t\ markdown\ --no-wrap
+
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Folding sections with ATX style headers. 
 "
 " Taken from
