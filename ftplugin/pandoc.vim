@@ -24,6 +24,12 @@ set nojoinspaces
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Use pandoc to tidy up text
+"
+" If you use this on your entire file, it will wipe out title blocks.
+" To preserve title blocks, use :MarkdownTidy instead. (If you use
+" :MarkdownTidy on a portion of your file, it will insert unwanted title
+" blocks...)
+"
 
 set equalprg=pandoc\ -t\ markdown\ --no-wrap
 
@@ -98,13 +104,15 @@ au BufWinEnter * silent loadview
 "
 " ## Simple Commands
 "
-" Markdown tidy with hard wraps
+" Markdown tidy with hard wraps 
+" (Note: this will insert an empty title block if no title block is present)
 
-	:command! MarkdownTidyWrap %!pandoc -t markdown
+	:command! MarkdownTidyWrap %!pandoc -t markdown -s
 
 " Markdown tidy without hard wraps
+" (Note: this will insert an empty title block if no title block is present)
 
-	:command! MarkdownTidy %!pandoc -t markdown --no-wrap
+	:command! MarkdownTidy %!pandoc -t markdown --no-wrap -s
 
 " ## Complex commands
 
