@@ -67,8 +67,8 @@ set foldmethod=expr
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Save folding between sessions
 "
-au BufWinLeave * mkview
-au BufWinEnter * silent loadview
+autocmd BufWinLeave * if expand("%") != "" | mkview | endif
+autocmd BufWinEnter * if expand("%") != "" | loadview | endif
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Autocomplete dictionary of citationkeys
