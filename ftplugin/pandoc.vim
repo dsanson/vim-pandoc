@@ -25,9 +25,10 @@ set display=lastline
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Do not add two spaces at end of punctuation when joining lines
-set nojoinspaces
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+setlocal nojoinspaces
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Use pandoc to tidy up text
 "
 " If you use this on your entire file, it will wipe out title blocks.
@@ -36,8 +37,7 @@ set nojoinspaces
 " blocks...)
 "
 
-set equalprg=pandoc\ -t\ markdown\ --no-wrap
-set formatprg=pandoc\ -t\ markdown\ --no-wrap
+setlocal equalprg=pandoc\ -t\ markdown\ --no-wrap
 
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -74,8 +74,8 @@ function! MarkdownLevel()
     endif
     return "="
 endfunction
-set foldexpr=MarkdownLevel()
-set foldmethod=expr
+setlocal foldexpr=MarkdownLevel()
+setlocal foldmethod=expr
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Save folding between sessions
