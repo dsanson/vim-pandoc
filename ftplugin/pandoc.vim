@@ -35,7 +35,7 @@ set equalprg=pandoc\ -t\ markdown\ --no-wrap
 
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" # Folding sections with ATX style headers. 
+" # Folding sections with ATX style headers.
 "
 " Taken from
 " http://stackoverflow.com/questions/3828606/vim-markdown-folding/4677454#4677454
@@ -59,16 +59,16 @@ function! MarkdownLevel()
     if getline(v:lnum) =~ '^###### .*$'
         return ">6"
     endif
-    return "=" 
+    return "="
 endfunction
-set foldexpr=MarkdownLevel()  
-set foldmethod=expr    
+set foldexpr=MarkdownLevel()
+set foldmethod=expr
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Save folding between sessions
 "
-au BufWinLeave * mkview
-au BufWinEnter * silent loadview
+autocmd BufWinLeave * if expand("%") != "" | mkview | endif
+autocmd BufWinEnter * if expand("%") != "" | loadview | endif
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set dictionary=~/.pandoc/citationkeys.dict
@@ -147,7 +147,7 @@ set omnifunc=Pandoc_Complete
 "
 " ## Simple Commands
 "
-" Markdown tidy with hard wraps 
+" Markdown tidy with hard wraps
 " (Note: this will insert an empty title block if no title block is present)
 
 	:command! MarkdownTidyWrap %!pandoc -t markdown -s
@@ -160,7 +160,7 @@ set omnifunc=Pandoc_Complete
 " ## Complex commands
 
 " Two options here: commands the rely on an external wrapper script, "pd", and
-" commands that don't. 
+" commands that don't.
 "
 " ### Commands that rely on "pd"
 "
@@ -168,12 +168,12 @@ set omnifunc=Pandoc_Complete
 "
 " 	https://gist.github.com/857619
 "
-" "pd" provides some shortcuts for common tasks, an easy way to 
+" "pd" provides some shortcuts for common tasks, an easy way to
 " set default conversion options. For details, read the comments in the
 " script or try `pd help`.
 "
 " The advantage of calling "pd" here rather than pandoc is that you can
-" set all your defaults once, and the conversions are available both in 
+" set all your defaults once, and the conversions are available both in
 " vim and from the cli.
 "
 " Below are some commands I use regularly. It should be easy to expand this
@@ -202,7 +202,7 @@ set omnifunc=Pandoc_Complete
 " disadvantage is that you have to manage all the cli options here.
 "
 " Note that these commands depend on OS X's "open" command. Linux users will
-" want to rewrite them to use the "xdg-open" command. 
+" want to rewrite them to use the "xdg-open" command.
 "
 " Generate html and open in default html viewer
 
@@ -216,7 +216,7 @@ set omnifunc=Pandoc_Complete
 
 	:command! MarkdownOdtOpen !out="%";out="${out\%.*}.odt";pandoc -t odt -sS -o "$out" %;open "$out"
 "
-" # Some suggested <Leader> mappings 
+" # Some suggested <Leader> mappings
 "
 " It is bad form to put <Leader> mappings in ftplugins. Here are the mappings I
 " have in my .vimrc. If you like them, you can either copy them to your vimrc
@@ -227,7 +227,7 @@ set omnifunc=Pandoc_Complete
 "map <silent> <LEADER>odt :MarkdownOdtCiteOpenpd<CR>
 "
 " While I'm at it, here are a few more functions mappings that are useful when
-" editing pandoc files. 
+" editing pandoc files.
 "
 " Open link in browser (OS X only; based on Gruber's url regex)
 "
@@ -267,4 +267,4 @@ set omnifunc=Pandoc_Complete
 "" Add new reference link (or footnote link) after current paragraph. (This
 "" works better than the snipmate snippet for doing this.)
 
-"map <Leader>nr ya[o<CR><ESC>p$a: 
+"map <Leader>nr ya[o<CR><ESC>p$a:
