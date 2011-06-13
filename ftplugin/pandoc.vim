@@ -71,33 +71,76 @@ au BufWinLeave * mkview
 au BufWinEnter * silent loadview
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" # Autocomplete dictionary of citationkeys
-" 
-" There must be a better way to do this. I've generated a list of citekeys from
-" my bibtex file and put it in citationkeys.dict.
-"
- set dictionary=~/.pandoc/citationkeys.dict
-"
+set dictionary=~/.pandoc/citationkeys.dict
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Autocomplete citationkeys using function
 "
 "
+let s:completion_type = ''
 
-"fun! CompleteKeys(findstart, base)
-  "if a:findstart
-	"" locate the start of the word
-	"let line = getline('.')
-	"let start = col('.') - 1
-	"while start > 0 && line[start - 1] =~ '\a'
-	  "let start -= 1
-	"endwhile
-	"return start
-  "else
-	"let res = system('bibkey -v ' . a:base) 
-	"return res
-  "endif
-"endfun
-"set completefunc=CompleteKeys
+function! Pandoc_Complete(findstart, base)
+	if a:findstart
+		" return the starting position of the word
+		let line = getline('.')
+		let pos = col('.') - 1
+		while pos > 0 && line[pos - 1] !~ '\\\|{\|\[\|<\|\s\|@\|\^'
+			let pos -= 1
+		endwhile
+
+		let line_start = line[:pos-1]
+		if line_start =~ '.*@$'
+			let s:completion_type = 'bib'
+		"else if line_start =~ '\[\^\=$'
+			"let s:completion_type = 'ref'
+		endif
+		return pos
+	else
+		" return suggestions in an array
+		let suggestions = []
+		if s:completion_type == 'bib'
+			" suggest BibTeX entries
+			let suggestions = Pandoc_BibComplete(a:base)
+		endif
+		return suggestions
+	endif
+endfunction
+
+function! Pandoc_BibComplete(regex)
+	let res = []
+	for m in split(Pandoc_BibKey(a:regex))
+		call add(res, m)
+	endfor
+	return res
+endfunction
+
+function! Pandoc_BibKey(partkey)
+ruby << EOL
+bib="/Users/david/Documents/Dropbox/bib/sanson.bib"
+
+def extractcitekeys(somestrings,text)
+  keys = []
+  somestrings.each { |match| 
+    match.chomp
+    keys = keys + text.scan(/@.*?\{(#{match}.*?),/i)
+  }
+  keys.uniq!
+  keys.sort!
+  return keys
+end
+
+strings=VIM::evaluate('a:partkey')
+
+File.open(bib) { |file|
+    mytext = file.read
+    mykeys = extractcitekeys(strings,mytext)
+	puts mykeys.join(" ")
+}
+EOL
+
+endfunction
+
+set omnifunc=Pandoc_Complete
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Commands that call Pandoc
