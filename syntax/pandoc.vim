@@ -4,8 +4,15 @@
 " HackedUpBy:	David Sanson
 " URL:		
 " Version:	2.1
-" Changes: 2011-03-05 (David Sanson)	
+" Changes: 
+" 2011-06-13
+" 	- Separate patterns for **strong** and *emphasis* 
+" 	- Enabled bold and italic display (thanks to Dirk Laurie for help with
+" 	this.)
+"
+" 2011-03-05 (David Sanson)	
 "	- Added support for Numbered Examples
+"
 " Remark:	Uses HTML and TeX syntax file
 " TODO:
 " 	- Add support for definition lists
@@ -179,13 +186,23 @@ syn match pdcLinkTitle /\s*[("'].*[)"']/ contained contains=@Spell
 
 
 """""""""""""""""""""""""""""""""""""""
-" Emphasis:
-
+" Strong:
+"
 "   Using underscores
-syn match pdcEmphasis   / \(_\|__\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell
+syn match pdcStrong / \(__\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell
 
 "   Using Asterisks
-syn match pdcEmphasis   / \(\*\|\*\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell
+syn match pdcStrong / \(\*\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell
+
+"""""""""""""""""""""""""""""""""""""""
+" Emphasis:
+"
+"Using underscores
+syn match pdcEmphasis   / \(_\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell
+
+"Using Asterisks
+syn match pdcEmphasis   / \(\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell
+
 
 
 """""""""""""""""""""""""""""""""""""""
@@ -286,7 +303,8 @@ hi link pdcHRule		Underlined
 hi link pdcListItem		Operator
 hi link pdcDefinitions		Operator
 
-hi link pdcEmphasis		Special
+hi link pdcEmphasis   htmlItalic
+hi link pdcStrong  			htmlBold
 hi link pdcSubscript		Special
 hi link pdcSuperscript		Special
 hi link pdcStrikeout	 	Special
