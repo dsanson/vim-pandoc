@@ -14,10 +14,10 @@ setlocal linebreak
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remappings that make j and k behave properly with
 " soft wrapping.
-nnoremap j gj
-nnoremap k gk
-vnoremap j gj
-vnoremap k gk
+nnoremap <buffer> j gj
+nnoremap <buffer> k gk
+vnoremap <buffer> j gj
+vnoremap <buffer> k gk
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Show partial wrapped lines
