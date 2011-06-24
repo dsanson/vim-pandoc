@@ -64,8 +64,7 @@ syn match pdcLatex	/\\\w\+{[^}]\+}/	contains=@LATEX
 syn region pdcLatex start=/\\begin{[^}]\+}\ze/ end=/\ze\\end{[^}]\+}/ contains=@LATEX
 
 "   Math Tex
-syn match pdcLatex	/$[^$]\+\$/	   contains=@LATEX
-
+syn match pdcLatex	/$[^$]\+\$/	contains=@LATEX
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Block Elements
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -240,7 +239,7 @@ syn match pdcFootnoteID /\[\^[^\]]\+\]/ nextgroup=pdcFootnoteDef
 "   This does not work correctly
 syn region pdcFootnoteDef  start=/:/ end=/^\n\+\(\(\t\+\|[ ]\{4,}\)\S\)\@!/ contained contains=pdcFootnoteDef
 "   Inline footnotes
-syn region pdcFootnoteDef matchgroup=pdcFootnoteID start=/\^\[/ matchgroup=pdcFootnoteID end=/\]/ skip=/\](/ 
+syn region pdcFootnoteDef matchgroup=pdcFootnoteID start=/\^\[/ matchgroup=pdcFootnoteID end=/\]/ skip=/\](/ contains=pdcLinkText,pdcLinkID,pdcLatex skipnl
 
 
 """""""""""""""""""""""""""""""""""""""
