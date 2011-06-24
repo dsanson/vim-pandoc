@@ -80,8 +80,8 @@ setlocal foldmethod=expr
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Save folding between sessions
 "
-autocmd BufWinLeave * if expand("%") != "" | mkview | endif
-autocmd BufWinEnter * if expand("%") != "" | loadview | endif
+autocmd BufWinLeave * if expand(&filetype) == "pandoc" | mkview | endif
+autocmd BufWinEnter * if expand(&filetype) == "pandoc" | loadview | endif
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Use ctrl-X ctrl-K for dictionary completions. This adds citation keys from
