@@ -2,17 +2,11 @@
 " Language:	Pandoc (superset of Markdown)
 " Maintainer:	Jeremy Schultz <taozhyn@gmail.com>
 " HackedUpBy:	David Sanson
-" URL:
+" ImprovedBy:	Felipe Morales
 " Version:	2.1
-" Changes: 
-"
-" 2011-07-20
-"
-"   - Improved support for definition lists: now allows both colon and tilda,
-"     indented by 0, 1, or 2 spaces.
-"
-" 2011-07-19
-"   - Fixed support for delimited code blocks
+" Changes:
+" 2011-06-24 (Felipe Morales)
+"   - Fixed footnotes and links, and added support for citations.
 "
 " 2011-06-13
 " 	- Separate patterns for **strong** and *emphasis* 
@@ -24,10 +18,7 @@
 "	- Added support for Numbered Examples
 "
 " TODO:
-"   - Display definition terms in blue bold
-" 	- Add support for citation keys
-" 	- Tables: Headerless simple tables; Grid tables
-" 	- Fix bug with multiline footnotes (? I've lost track of what this was)
+" 	- Add support for definition lists
 "
 " Remark:	Uses HTML and TeX syntax file
 " 
@@ -226,7 +217,7 @@ syn match pdcDefinitions /^  \(:\|\~\)\(\t\|[ ]\{1,}\)/  nextgroup=pdcListItem,p
 syn match pdcFootnoteID /\[\^[^\]]\+\]/ nextgroup=pdcFootnoteDef
 "   Inline footnotes
 syn region pdcFootnoteDef matchgroup=pdcFootnoteID start=/\^\[/ end=/\]/ contains=pdcLinkArea,pdcLatex,pdcPCite skipnl
-syn region pdcFootnoteBlock start=/\[\^.*\]:\s*/ end=/^\n/ contains=pdcLinkArea,pdcLatex,pdcPCite skipnl
+syn region pdcFootnoteBlock start=/\[\^.*\]:\s*/ end=/^\n^\s\@!/ contains=pdcLinkArea,pdcLatex,pdcPCite skipnl
 syn match pdcFootnoteID /\[\^.*\]/ contained containedin=pdcFootnoteBlock
 
 """""""""""""""""""""""""""""""""""""""
@@ -279,8 +270,8 @@ hi link pdcHRule		Underlined
 hi link pdcListItem		Operator
 hi link pdcDefinitions		Operator
 
-hi link pdcEmphasis   htmlItalic
-hi link pdcStrong  			htmlBold
+hi pdcEmphasis	gui=italic
+hi pdcStrong  	gui=bold
 hi link pdcSubscript		Special
 hi link pdcSuperscript		Special
 hi link pdcStrikeout	 	Special
