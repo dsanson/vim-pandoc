@@ -143,22 +143,23 @@ syn match pdcHRule  /\s\{0,3}\(\*\s*\)\{3,}\n/	contained nextgroup=pdcHRule
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""
-" Inline Links:
-syn match pdcLinkArea /\[.\{-}\](.\{-})/
+" inline links:
+syn match pdcLinkArea /\[.\{-}\](.\{-})/ 
 syn match pdcLinkText /\[.\{-}\]/hs=s+1,he=e-1 containedin=pdcLinkArea contained contains=@Spell
 syn match pdcLinkURL /(.\{-})/hs=s+1,he=e-1 containedin=pdcLinkArea contained
-syn match pdcLinkTitle /".\{-}"/ contained containedin=pdcLinkURL contains=@Spell 
+syn match pdcLinkTitle /".\{-}"/ contained containedin=pdcLinkURL contains=@Spell
 
 " Ref links
 syn match pdcLinkArea /^\s*\[.\{-}\]:\s*http[^>]*$/
 syn match pdcLinkURL /:\s*http[^>]*$/hs=s+2 contained containedin=pdcLinkArea
+" explicit ref-text link
+syn match pdcLinkText /\[.\{-}\]\[.\{-}\]/
+" TODO: implicit ref-text link
+" syn match pdcLinkText /\[.\{-}\]/ containedin=pdcLinkArea
 
-" Link URL for inline <> links: 
+" Link URL for inline <> links:
 syn match pdcLinkURL /<http[^>]*>/
 syn match pdcLinkURL /<[^>]*@[^>]*.[^>]*>/
-
-" Link Title
-" syn match pdcLinkTitle /\s*[("'].*[)"']/ contained contains=@Spell
 
 """""""""""""""""""""""""""""""""""""""
 " Strong:
