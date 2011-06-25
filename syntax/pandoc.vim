@@ -90,8 +90,8 @@ syn region pdcHeader    start="^\s*#\{1,6}[^#]*" end="\($\|#\+\)" contains=@Spel
 """""""""""""""""""""""""""""""""""""""
 " Blockquotes:
 
-syn match pdcBlockquote	    /\s*>.*$/  nextgroup=pdcBlockquote,pdcBlockquote2 contained skipnl
-syn match pdcBlockquote2    /[^>].*/  nextgroup=pdcBlockquote2 skipnl contained
+syn match pdcBlockquote	    /\s*>.*$/  nextgroup=pdcBlockquote,pdcBlockquote2 contained skipnl contains=pdcPCite
+syn match pdcBlockquote2    /[^>].*/  nextgroup=pdcBlockquote2 skipnl contained contains=pdcPCite
 
 
 """""""""""""""""""""""""""""""""""""""
@@ -239,7 +239,7 @@ syn match pdcFootnoteID /\[\^[^\]]\+\]/ nextgroup=pdcFootnoteDef
 "   This does not work correctly
 syn region pdcFootnoteDef  start=/:/ end=/^\n\+\(\(\t\+\|[ ]\{4,}\)\S\)\@!/ contained contains=pdcFootnoteDef
 "   Inline footnotes
-syn region pdcFootnoteDef matchgroup=pdcFootnoteID start=/\^\[/ matchgroup=pdcFootnoteID end=/\]/ skip=/\](/ contains=pdcLinkText,pdcLinkID,pdcLatex skipnl
+syn region pdcFootnoteDef matchgroup=pdcFootnoteID start=/\^\[/ matchgroup=pdcFootnoteID end=/\]/ skip=/\](/ contains=pdcLinkText,pdcLinkID,pdcLatex,pdcPCite skipnl
 
 
 """""""""""""""""""""""""""""""""""""""
@@ -262,6 +262,16 @@ syn match pdcTableMultiCaption /\n*\s*Table.*\n/ contained nextgroup=pdcTableCap
 """""""""""""""""""""""""""""""""""""""
 " Delimited Code Block: (added in 1.0)
 syn region pdcCodeBlock matchgroup=pdcCodeStart start=/^\z(\~\{3,}\) \( {[^}]\+}\)\?/ matchgroup=pdcCodeEnd end=/^\z1\~*/
+
+"""""""""""""""""""""""""""""""""""""""
+" Citations:
+" parenthetical citations
+syn match pdcPCite /\[-\?@.\{-}\]/ contains=pdcEmphasis,pdcStrong
+syn match pdcPCite /\[\w*\s-\?.\{-}\]/ contains=pdcEmphasis,pdcStrong
+" in-text citations without location
+syn match pdcPCite /@\w*/
+" in-text citations with location
+syn match pdcPCite /@\w*\s\[.\{-}\]/
 
 """""""""""""""""""""""""""""""""""""""
 " Newline, 2 spaces at the end of line means newline
@@ -315,6 +325,8 @@ hi link pdcTableMultiBody	Identifier
 hi link pdcTableCaption		Label
 hi link pdcTableMultiCaption	Label
 hi link pdcTableCaptionCont	Label
+
+hi link pdcPCite Label
 
 hi link pdcNewLine		Error
 

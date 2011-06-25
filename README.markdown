@@ -1,9 +1,7 @@
 Pandoc for Vim
 ==============
 
-This is a bundle of pandoc-related stuff that I've thrown together for
-my own use. I don't really know what I am doing, so use at your own
-risk!
+This is a bundle of pandoc-related stuff that I've thrown together for my own use. I don't really know what I am doing, so use at your own risk!
 
 I need to write real vim-style documentation. For now, the documentation is here, and in the heavily commented ftplugin/pandoc.vim file. I encourage you to read through that file before using this plugin.
 
@@ -16,7 +14,7 @@ Known Gotchas
     fix).
 3.  At various places, I assume that paths are POSIX paths, which
     will cause trouble on Windows (should be easy to fix).
-4444.  No vim help files.
+4.  No vim help files.
 
 Stuff From Elsewhere
 --------------------
