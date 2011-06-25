@@ -58,11 +58,7 @@ unlet b:current_syntax
 syn include @LATEX syntax/tex.vim
 
 "   Single Tex command
-syn match pdcLatex	/\\\w\+{[^}]\+}/	contains=@LATEX
-
-"   Tex Block (begin-end)
-syn region pdcLatex start=/\\begin{[^}]\+}\ze/ end=/\ze\\end{[^}]\+}/ contains=@LATEX
-
+syn match pdcLatex /\\\w\S/ contains=@LATEX
 "   Math Tex
 syn match pdcLatex	/\$.*\$/ contains=@LATEX
 
@@ -153,7 +149,11 @@ syn match pdcLinkText /\[.\{-}\]/hs=s+1,he=e-1 containedin=pdcLinkArea contained
 syn match pdcLinkURL /(.\{-})/hs=s+1,he=e-1 containedin=pdcLinkArea contained
 syn match pdcLinkTitle /".\{-}"/ contained containedin=pdcLinkURL contains=@Spell 
 
-"   Link URL for inline <> links
+" Ref links:
+syn match pdcLinkArea /^\[.\{-}\]:\s*http[^>]*$/
+syn match pdcLinkURL /:\s*http[^>]*$/hs=s+2 contained containedin=pdcLinkArea
+
+" Link URL for inline <> links: 
 syn match pdcLinkURL /<http[^>]*>/
 syn match pdcLinkURL /<[^>]*@[^>]*.[^>]*>/
 
