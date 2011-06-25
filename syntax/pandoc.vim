@@ -64,7 +64,8 @@ syn match pdcLatex	/\\\w\+{[^}]\+}/	contains=@LATEX
 syn region pdcLatex start=/\\begin{[^}]\+}\ze/ end=/\ze\\end{[^}]\+}/ contains=@LATEX
 
 "   Math Tex
-syn match pdcLatex	/$[^$]\+\$/	contains=@LATEX
+syn match pdcLatex	/\$.*\$/ contains=@LATEX
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Block Elements
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -72,19 +73,17 @@ syn match pdcLatex	/$[^$]\+\$/	contains=@LATEX
 " Needed by other elements
 syn match pdcBlankLine   /\(^\s*\n\|\%^\)/    nextgroup=pdcHeader,pdcCodeBlock,pdcListItem,pdcListItem1,pdcHRule,pdcTableHeader,pdcTableMultiStart,pdcBlockquote transparent
 
-
 """""""""""""""""""""""""""""""""""""""
 " Title Block:
 syn match pandocTitleBlock /\%^\(%.*\n\)\{1,3}$/
-
 
 """""""""""""""""""""""""""""""""""""""
 " Headers:
 
 "   Underlined, using == or --
-syn match  pdcHeader    /^.\+\n[=-]\+$/ contains=@Spell nextgroup=pdcHeader contained skipnl
+syn match  pdcHeader    /^.\+\n[=-]\+$/ contains=@Spell,pdcLatex nextgroup=pdcHeader contained skipnl
 "   Atx-style, Hash marks
-syn region pdcHeader    start="^\s*#\{1,6}[^#]*" end="\($\|#\+\)" contains=@Spell contained nextgroup=pdcHeader skipnl
+syn region pdcHeader    start="^\s*#\{1,6}[^#]*" end="\($\|#\+\)" contains=@Spell,pdcLatex contained nextgroup=pdcHeader skipnl
 
 
 """""""""""""""""""""""""""""""""""""""
@@ -148,30 +147,18 @@ syn match pdcHRule  /\s\{0,3}\(\*\s*\)\{3,}\n/	contained nextgroup=pdcHRule
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""
-" Links:
-"   Link Text
-syn match pdcLinkText /\[\zs[^\]]*\ze\]/ contains=@Spell
-"   Link ID
-syn match pdcLinkID /\][ ]\{0,1}\[\zs[^\]]*\ze\]/
-"   Skip [ so we do not highlight it
-syn match pdcSkip /^[ ]\{0,3}\[/ nextgroup=pdcLinkID
-"   Link ID - definition
-syn match pdcLinkID /[^\]]*\ze\]:/ nextgroup=pdcSkip skipwhite contained
-"   Skip ]: so we do not highlight it
-syn match pdcSkip /\]:/ contained nextgroup=pdcLinkURL skipwhite
-"   Link URL
-syn region pdcLinkURL  start=/\](\zs/	end=/)/me=e-1
-"   Link URL on ID definition line
-syn match pdcLinkURL /\s\+.*\s\+\ze[("']/ nextgroup=pdcLinkTitle skipwhite  contained
-syn match pdcLinkURL /\s*.*\s*[^)"']\s*$/ contained
-syn match pdcLinkURL /\s*.*\s*[^)"']\s*\n\s*\ze[("']/ contained nextgroup=pdcLinkTitle skipwhite
+" Inline Links:
+syn match pdcLinkArea /\[.\{-}\](.\{-})/
+syn match pdcLinkText /\[.\{-}\]/hs=s+1,he=e-1 containedin=pdcLinkArea contained contains=@Spell
+syn match pdcLinkURL /(.\{-})/hs=s+1,he=e-1 containedin=pdcLinkArea contained
+syn match pdcLinkTitle /".\{-}"/ contained containedin=pdcLinkURL contains=@Spell 
 
 "   Link URL for inline <> links
 syn match pdcLinkURL /<http[^>]*>/
 syn match pdcLinkURL /<[^>]*@[^>]*.[^>]*>/
 
 " Link Title
-syn match pdcLinkTitle /\s*[("'].*[)"']/ contained contains=@Spell
+" syn match pdcLinkTitle /\s*[("'].*[)"']/ contained contains=@Spell
 
 """""""""""""""""""""""""""""""""""""""
 " Strong:
@@ -237,9 +224,9 @@ syn match pdcDefinitions /^  \(:\|\~\)\(\t\|[ ]\{1,}\)/  nextgroup=pdcListItem,p
 " Footnote:
 syn match pdcFootnoteID /\[\^[^\]]\+\]/ nextgroup=pdcFootnoteDef
 "   This does not work correctly
-syn region pdcFootnoteDef  start=/:/ end=/^\n\+\(\(\t\+\|[ ]\{4,}\)\S\)\@!/ contained contains=pdcFootnoteDef
+" syn region pdcFootnoteDef  start=/:/ end=/^\n\+\(\(\t\+\|[ ]\{4,}\)\S\)\@!/ contained contains=pdcFootnoteDef
 "   Inline footnotes
-syn region pdcFootnoteDef matchgroup=pdcFootnoteID start=/\^\[/ matchgroup=pdcFootnoteID end=/\]/ skip=/\](/ contains=pdcLinkText,pdcLinkID,pdcLatex,pdcPCite skipnl
+syn region pdcFootnoteDef matchgroup=pdcFootnoteID start=/\^\[/ end=/\]/ contains=pdcLinkArea,pdcLatex,pdcPCite skipnl
 
 
 """""""""""""""""""""""""""""""""""""""
@@ -267,7 +254,7 @@ syn region pdcCodeBlock matchgroup=pdcCodeStart start=/^\z(\~\{3,}\) \( {[^}]\+}
 " Citations:
 " parenthetical citations
 syn match pdcPCite /\[-\?@.\{-}\]/ contains=pdcEmphasis,pdcStrong
-syn match pdcPCite /\[\w*\s-\?.\{-}\]/ contains=pdcEmphasis,pdcStrong
+" syn match pdcPCite /\[\w.\{-}\s-\?.\{-}\]/ contains=pdcEmphasis,pdcStrong
 " in-text citations without location
 syn match pdcPCite /@\w*/
 " in-text citations with location
@@ -298,10 +285,10 @@ hi link pdcSubscript		Special
 hi link pdcSuperscript		Special
 hi link pdcStrikeout	 	Special
 
+hi link pdcLinkArea		Special
 hi link pdcLinkText		Type
-hi link pdcLinkID		Identifier
-hi link pdcLinkURL		Underlined
-hi link pdcLinkTitle		Comment
+hi link pdcLinkURL	Underlined
+hi link pdcLinkTitle Identifier
 
 hi link pdcFootnoteID		Identifier
 hi link pdcFootnoteDef		Comment
