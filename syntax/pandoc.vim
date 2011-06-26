@@ -51,7 +51,7 @@ syn include @LATEX syntax/tex.vim
 "   Single Tex command
 syn match pdcLatex /\\\w\S/ contains=@LATEX
 "   Math Tex
-syn match pdcLatex	/\$.*\$/ contains=@LATEX
+syn match pdcLatex	/\$.\{-}\$/ contains=@LATEX
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Block Elements
@@ -217,8 +217,8 @@ syn match pdcDefinitions /^  \(:\|\~\)\(\t\|[ ]\{1,}\)/  nextgroup=pdcListItem,p
 syn match pdcFootnoteID /\[\^[^\]]\+\]/ nextgroup=pdcFootnoteDef
 "   Inline footnotes
 syn region pdcFootnoteDef matchgroup=pdcFootnoteID start=/\^\[/ end=/\]/ contains=pdcLinkArea,pdcLatex,pdcPCite skipnl
-syn region pdcFootnoteBlock start=/\[\^.*\]:\s*/ end=/^\n^\s\@!/ contains=pdcLinkArea,pdcLatex,pdcPCite skipnl
-syn match pdcFootnoteID /\[\^.*\]/ contained containedin=pdcFootnoteBlock
+syn region pdcFootnoteBlock start=/\[\^.\{-}\]:\s*/ end=/^\n^\s\@!/ contains=pdcLinkArea,pdcLatex,pdcPCite skipnl
+syn match pdcFootnoteID /\[\^.\{-}\]/ contained containedin=pdcFootnoteBlock
 
 """""""""""""""""""""""""""""""""""""""
 " Tables:
