@@ -37,7 +37,6 @@ syn sync linebreaks=1
 " Set embedded HTML highlighting
 syn include @HTML syntax/html.vim
 syn match pdcHTML	/<\a[^>]\+>/	contains=@HTML
-
 " Support HTML multi line comments
 syn region pdcHTMLComment   start=/<!--/ end=/-->/
 
@@ -47,7 +46,6 @@ syn region pdcHTMLComment   start=/<!--/ end=/-->/
 " Unset current_syntax so the 2nd include will work
 unlet b:current_syntax
 syn include @LATEX syntax/tex.vim
-
 "   Single Tex command
 syn match pdcLatex /\\\w\S/ contains=@LATEX
 "   Math Tex
@@ -90,7 +88,6 @@ syn match pdcCodeBlock   /\(\s\{4,}\|\t\{1,}\).*\n/ contained nextgroup=pdcCodeB
 syn match pdcCodeStartPre	/<pre>/ nextgroup=pdcCodeHTMLPre skipnl transparent
 syn match pdcCodeHTMLPre   /.*/  contained nextgroup=pdcCodeHTMLPre,pdcCodeEndPre skipnl
 syn match pdcCodeEndPre  /\s*<\/pre>/ contained transparent
-
 "   HTML code blocks, code
 syn match pdcCodeStartCode	/<code>/ nextgroup=pdcCodeHTMLCode skipnl transparent
 syn match pdcCodeHTMLCode   /.*/  contained nextgroup=pdcCodeHTMLCode,pdcCodeEndCode skipnl
@@ -156,19 +153,17 @@ syn match pdcLinkURL /<[^>]*@[^>]*.[^>]*>/
 " Strong:
 "
 "   Using underscores
-syn match pdcStrong /\s\(__\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell
-
+syn match pdcStrong /\(__\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell skipnl
 "   Using Asterisks
-syn match pdcStrong /\s\(\*\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell
+syn match pdcStrong /\(\*\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell skipnl
 
 """""""""""""""""""""""""""""""""""""""
 " Emphasis:
 "
 "Using underscores
-syn match pdcEmphasis   /\s\(_\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell
-
+syn match pdcEmphasis   /\(_\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell skipnl
 "Using Asterisks
-syn match pdcEmphasis   /\s\(\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell
+syn match pdcEmphasis   /\(\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell skipnl
 
 """""""""""""""""""""""""""""""""""""""
 " Inline Code:
@@ -216,8 +211,8 @@ syn match pdcDefinitions /^  \(:\|\~\)\(\t\|[ ]\{1,}\)/  nextgroup=pdcListItem,p
 " Footnote:
 syn match pdcFootnoteID /\[\^[^\]]\+\]/ nextgroup=pdcFootnoteDef
 "   Inline footnotes
-syn region pdcFootnoteDef matchgroup=pdcFootnoteID start=/\^\[/ end=/\]/ contains=pdcLinkArea,pdcLatex,pdcPCite skipnl
-syn region pdcFootnoteBlock start=/\[\^.\{-}\]:\s*/ end=/^\n^\s\@!/ contains=pdcLinkArea,pdcLatex,pdcPCite skipnl
+syn region pdcFootnoteDef matchgroup=pdcFootnoteID start=/\^\[/ end=/\]/ contains=pdcLinkArea,pdcLatex,pdcPCite,@Spell skipnl
+syn region pdcFootnoteBlock start=/\[\^.\{-}\]:\s*/ end=/^\n^\s\@!/ contains=pdcLinkArea,pdcLatex,pdcPCite,pdcStrong,pdcEmphasis,@Spell skipnl
 syn match pdcFootnoteID /\[\^.\{-}\]/ contained containedin=pdcFootnoteBlock
 
 """""""""""""""""""""""""""""""""""""""
@@ -244,7 +239,7 @@ syn region pdcCodeBlock matchgroup=pdcCodeStart start=/^\z(\~\{3,}\) \( {[^}]\+}
 """""""""""""""""""""""""""""""""""""""
 " Citations:
 " parenthetical citations
-syn match pdcPCite /\[-\?@.\{-}\]/ contains=pdcEmphasis,pdcStrong
+syn match pdcPCite /\[-\?@.\{-}\]/ contains=pdcEmphasis,pdcStrong,pdcLatex,@Spell
 " syn match pdcPCite /\[\w.\{-}\s-\?.\{-}\]/ contains=pdcEmphasis,pdcStrong
 " in-text citations without location
 syn match pdcPCite /@\w*/
@@ -283,7 +278,6 @@ hi link pdcLinkTitle Identifier
 
 hi link pdcFootnoteID		Identifier
 hi link pdcFootnoteDef		Comment
-hi link pandocFootnoteCont 	Error
 hi link pdcFootnoteBlock	Comment
 
 hi link pdcCodeBlock		String
@@ -307,7 +301,7 @@ hi link pdcTableCaptionCont	Label
 
 hi link pdcPCite Label
 
-hi link pdcNewLine		Error
+" hi link pdcNewLine		Error
 
 
 " For testing
