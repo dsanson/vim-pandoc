@@ -91,6 +91,11 @@ syn match pdcBlockquote2    /[^>].*/  nextgroup=pdcBlockquote2 skipnl contained
 "   This rule must appear for pdcListItem, or highlighting gets messed up
 syn match pdcCodeBlock   /\(\s\{4,}\|\t\{1,}\).*\n/ contained nextgroup=pdcCodeBlock
 
+"   Delimited code blocks start with three or more tildas and end with at
+"   least as many tildas
+
+syn match pdcCodeBlock /^\(\~\~\~\+\)\_.\{-}\_^\1\~*/
+
 "   HTML code blocks, pre and code
 syn match pdcCodeStartPre	/<pre>/ nextgroup=pdcCodeHTMLPre skipnl transparent
 syn match pdcCodeHTMLPre   /.*/  contained nextgroup=pdcCodeHTMLPre,pdcCodeEndPre skipnl
