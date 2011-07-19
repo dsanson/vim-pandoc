@@ -32,6 +32,14 @@ set nojoinspaces
 "
 
 set equalprg=pandoc\ -t\ markdown\ --no-wrap
+set formatprg=pandoc\ -t\ markdown\ --no-wrap
+
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" HTML style comments
+"
+setlocal commentstring=<!--%s-->
+setlocal comments=s:<!--,m:\ \ \ \ ,e:-->
 
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -129,7 +137,6 @@ def extractcitekeys(somestrings,text)
 end
 
 strings=VIM::evaluate('a:partkey')
-
 File.open(bib) { |file|
     mytext = file.read
     mykeys = extractcitekeys(strings,mytext)
