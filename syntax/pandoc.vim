@@ -189,19 +189,19 @@ syn match pdcLinkTitle /\s*[("'].*[)"']/ contained contains=@Spell
 " Strong:
 "
 "   Using underscores
-syn match pdcStrong /\s\(__\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell
+syn match pdcStrong / \(__\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell
 
 "   Using Asterisks
-syn match pdcStrong /\s\(\*\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell
+syn match pdcStrong / \(\*\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell
 
 """""""""""""""""""""""""""""""""""""""
 " Emphasis:
 "
 "Using underscores
-syn match pdcEmphasis   /\s\(_\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell
+syn match pdcEmphasis   / \(_\)\([^_ ]\|[^_]\( [^_]\)\+\)\+\1/    contains=@Spell
 
 "Using Asterisks
-syn match pdcEmphasis   /\s\(\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell
+syn match pdcEmphasis   / \(\*\)\([^\* ]\|[^\*]\( [^\*]\)\+\)\+\1/    contains=@Spell
 
 
 
