@@ -6,8 +6,13 @@
 " Version:	2.1
 " Changes: 
 "
+" 2011-07-20
+"
+"   - Improved support for definition lists: now allows both colon and tilda,
+"     indented by 0, 1, or 2 spaces.
+"
 " 2011-07-19
-"  - Added support for delimited code blocks
+"   - Fixed support for delimited code blocks
 "
 " 2011-06-13
 " 	- Separate patterns for **strong** and *emphasis* 
@@ -18,11 +23,14 @@
 " 2011-03-05 (David Sanson)	
 "	- Added support for Numbered Examples
 "
-" Remark:	Uses HTML and TeX syntax file
 " TODO:
-" 	- Add support for definition lists
-" 	- Add support for citations
-" 	- Fix bug with multiline footnotes
+"   - Display definition terms in blue bold
+" 	- Add support for citation keys
+" 	- Tables: Headerless simple tables; Grid tables
+" 	- Fix bug with multiline footnotes (? I've lost track of what this was)
+"
+" Remark:	Uses HTML and TeX syntax file
+" 
 "
 if version < 600
   syntax clear
@@ -44,7 +52,7 @@ syn region pdcHTMLComment   start=/<!--/ end=/-->/
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set embedded LaTex (pandox extension) highlighting
+" Set embedded LaTex (pandoc extension) highlighting
 " Unset current_syntax so the 2nd include will work
 unlet b:current_syntax
 syn include @LATEX syntax/tex.vim
@@ -256,7 +264,11 @@ syn match pdcStrikeout   /\~\~[^\~ ]\([^\~]\|\~ \)*\~\~/ contains=@Spell
 
 """""""""""""""""""""""""""""""""""""""
 " Definitions:
-syn match pdcDefinitions /:\(\t\|[ ]\{3,}\)/  nextgroup=pdcListItem,pdcCodeBlock,pdcBlockquote,pdcHRule
+syn match pdcDefinitions /^\(:\|\~\)\(\t\|[ ]\{3,}\)/  nextgroup=pdcListItem,pdcCodeBlock,pdcBlockquote,pdcHRule
+
+syn match pdcDefinitions /^ \(:\|\~\)\(\t\|[ ]\{2,}\)/  nextgroup=pdcListItem,pdcCodeBlock,pdcBlockquote,pdcHRule
+
+syn match pdcDefinitions /^  \(:\|\~\)\(\t\|[ ]\{1,}\)/  nextgroup=pdcListItem,pdcCodeBlock,pdcBlockquote,pdcHRule
 
 """""""""""""""""""""""""""""""""""""""
 " Footnote:
@@ -285,13 +297,6 @@ syn match pdcTableMultiHeader /\(\s*\w\+\(\s\+\w\+\)\+\s*\n\)\+\s*-\+\(\s\+-\+\)
 syn match pdcTableMultiBody /^\(\s\{3,}[^-]\|[^-\s]\).*$/ contained nextgroup=pdcTableMultiBody,pdcTableMultiSkipNL,pdcTableMultiEnd skipnl
 syn match pdcTableMultiSkipNL /^\s*\n/ contained nextgroup=pdcTableMultiBody,pdcTableMultiEnd skipnl
 syn match pdcTableMultiCaption /\n*\s*Table.*\n/ contained nextgroup=pdcTableCaptionCont
-
-
-
-"""""""""""""""""""""""""""""""""""""""
-" Delimited Code Block: (added in 1.0)
-syn region pdcCodeBlock matchgroup=pdcCodeStart start=/^\z(\~\{3,}\) \( {[^}]\+}\)\?/ matchgroup=pdcCodeEnd end=/^\z1\~*/
-
 
 """""""""""""""""""""""""""""""""""""""
 " Newline, 2 spaces at the end of line means newline
