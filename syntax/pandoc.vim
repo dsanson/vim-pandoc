@@ -5,10 +5,15 @@
 " URL:
 " Version:	2.1
 " Changes: 
+"
+" 2011-07-19
+"  - Added support for delimited code blocks
+"
 " 2011-06-13
 " 	- Separate patterns for **strong** and *emphasis* 
 " 	- Enabled bold and italic display (thanks to Dirk Laurie for help with
-" 	this.)
+" 	this.) Note that my favorite fixed width font, Monaco, doesn't support
+" 	italics :-(
 "
 " 2011-03-05 (David Sanson)	
 "	- Added support for Numbered Examples
