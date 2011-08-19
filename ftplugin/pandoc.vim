@@ -16,6 +16,10 @@ nnoremap j gj
 nnoremap k gk
 vnoremap j gj
 vnoremap k gk
+
+" Show partial wrapped lines
+set display=lastline
+
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Do not add two spaces at end of punctuation when joining lines
