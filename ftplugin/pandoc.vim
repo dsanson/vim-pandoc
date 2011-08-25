@@ -8,8 +8,8 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Soft word wrapping
-set formatoptions=1
-set linebreak
+setlocal formatoptions=1
+setlocal linebreak
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remappings that make j and k behave properly with
@@ -21,7 +21,7 @@ vnoremap k gk
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Show partial wrapped lines
-set display=lastline
+setlocal display=lastline
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Do not add two spaces at end of punctuation when joining lines
@@ -87,7 +87,7 @@ autocmd BufWinEnter * if expand("%") != "" | loadview | endif
 " # Use ctrl-X ctrl-K for dictionary completions. This adds citation keys from
 " ~/.pandoc/citationkeys.dict to the dictionary. 
 " 
-set dictionary+=~/.pandoc/citationkeys.dict
+setlocal dictionary+=~/.pandoc/citationkeys.dict
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Autocomplete citationkeys using function
 "
@@ -159,7 +159,7 @@ EOL
 return myres
 endfunction
 
-set omnifunc=Pandoc_Complete
+setlocal omnifunc=Pandoc_Complete
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
