@@ -2,23 +2,24 @@
 " Language:	Pandoc (superset of Markdown)
 " Maintainer:	Jeremy Schultz <taozhyn@gmail.com>
 " HackedUpBy:	David Sanson
-" ImprovedBy:	Felipe Morales
-" Version:	2.1
+" GreatlyImprovedBy:	Felipe Morales
+" Version:	2.2
 " Changes:
+"
+" 2011-08-25 (David Sanson)
+"   - Merged in a bunch of fixes by Felipe Morales and Wei Dai
+"
 " 2011-06-24 (Felipe Morales)
 "   - Fixed footnotes and links, and added support for citations.
 "
 " 2011-06-13
 " 	- Separate patterns for **strong** and *emphasis* 
-" 	- Enabled bold and italic display (thanks to Dirk Laurie for help with
-" 	this.) Note that my favorite fixed width font, Monaco, doesn't support
-" 	italics :-(
+" 	- Enabled bold and italic display (thanks to Dirk Laurie for
+" 	  help withi this.) Note that my favorite fixed width font, 
+" 	  Monaco, doesn't support italics :-(
 "
 " 2011-03-05 (David Sanson)	
 "	- Added support for Numbered Examples
-"
-" TODO:
-" 	- Add support for definition lists
 "
 " Remark:	Uses HTML and TeX syntax file
 " 

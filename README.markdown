@@ -16,13 +16,17 @@ Known Gotchas
     will cause trouble on Windows (should be easy to fix).
 4.  No vim help files.
 
+Help From Others
+----------------
+
+Thanks to both [Felipe Morales](https://github.com/fmoralesc) and [Wei Dai](https://github.com/clvv) for lots of bug fixes and improvements. Special thanks to Felipe, who has made dramatic improvements to the syntax file.
+
 Stuff From Elsewhere
 --------------------
 
 The syntax file was originally by jeremy schultz (found
 [here](http://www.vim.org/scripts/script.php?script_id=2389)) as
-githubbed by [wunki](https://github.com/wunki/vim-pandoc). I and others (see the forks!) have made some tweaks to add support for
-definition lists, numbered example lists, and some other stuff.
+githubbed by [wunki](https://github.com/wunki/vim-pandoc). 
 
 The snippets file, for use with
 [snipMate](http://www.vim.org/scripts/script.php?script_id=2540), is a
