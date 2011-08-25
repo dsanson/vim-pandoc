@@ -1,32 +1,33 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ftplugin/pandoc.vim
 "
 " Thrown together by David Sanson <https://github.com/dsanson>, who is
-" a complete newbie when it comes to vim, so doesn't really know what he is
-" doing.
+" a complete newbie when it comes to vim, so doesn't really know what 
+" he is doing.
 "
-" Use at your own risk!
 "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" # Soft word wrapping
-"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Soft word wrapping
 set formatoptions=1
 set linebreak
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remappings that make j and k behave properly with
+" soft wrapping.
 nnoremap j gj
 nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Show partial wrapped lines
 set display=lastline
 
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Do not add two spaces at end of punctuation when joining lines
-"
 set nojoinspaces
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Use pandoc to tidy up text
 "
 " If you use this on your entire file, it will wipe out title blocks.
@@ -39,14 +40,14 @@ set equalprg=pandoc\ -t\ markdown\ --no-wrap
 set formatprg=pandoc\ -t\ markdown\ --no-wrap
 
 "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " HTML style comments
 "
 setlocal commentstring=<!--%s-->
 setlocal comments=s:<!--,m:\ \ \ \ ,e:-->
 
 "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Folding sections with ATX style headers.
 "
 " Taken from
@@ -76,17 +77,19 @@ endfunction
 set foldexpr=MarkdownLevel()
 set foldmethod=expr
 "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Save folding between sessions
 "
 autocmd BufWinLeave * if expand("%") != "" | mkview | endif
 autocmd BufWinEnter * if expand("%") != "" | loadview | endif
 "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set dictionary=~/.pandoc/citationkeys.dict
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" # Use ctrl-X ctrl-K for dictionary completions. This adds citation keys from
+" ~/.pandoc/citationkeys.dict to the dictionary. 
+" 
+set dictionary+=~/.pandoc/citationkeys.dict
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Autocomplete citationkeys using function
-"
 "
 let s:completion_type = ''
 
@@ -102,12 +105,10 @@ function! Pandoc_Complete(findstart, base)
 		let line_start = line[:pos-1]
 		if line_start =~ '.*@$'
 			let s:completion_type = 'bib'
-		"else if line_start =~ '\[\^\=$'
-			"let s:completion_type = 'ref'
 		endif
 		return pos
 	else
-		" return suggestions in an array
+		"return suggestions in an array
 		let suggestions = []
 		if s:completion_type == 'bib'
 			" suggest BibTeX entries
@@ -117,54 +118,64 @@ function! Pandoc_Complete(findstart, base)
 	endif
 endfunction
 
-function! Pandoc_BibComplete(regex)
-	let res = []
-	for m in split(Pandoc_BibKey(a:regex))
-		call add(res, m)
-	endfor
+function! Pandoc_BibComplete(regexp)
+	if !exists('g:PandocBibfile')
+		if filereadable($HOME . '/.pandoc/default.bib')
+			let g:PandocBibfile = $HOME . '/.pandoc/default.bib'
+		elseif filereadable($HOME . '/Library/texmf/bibtex/bib/default.bib')
+			let g:PandocBibfile = $HOME . '/Library/texmf/bibtex/bib/default.bib'
+		elseif filereadable($HOME . '/texmf/bibtex/bib/default.bib')
+			let g:PandocBibfile = $HOME . '/texmf/bibtex/bib/default.bib'
+		else
+			return []
+		endif
+
+	endif
+
+	let bibdata = "/Users/david/.pandoc/default.bib"
+
+	let res = split(Pandoc_BibKey(a:regexp))
+
 	return res
+
 endfunction
 
 function! Pandoc_BibKey(partkey)
+	let myres = ''
 ruby << EOL
-bib="/Users/david/Documents/Dropbox/bib/sanson.bib"
+bib = VIM::evaluate('g:PandocBibfile')
+string = VIM::evaluate('a:partkey')
 
-def extractcitekeys(somestrings,text)
-  keys = []
-  somestrings.each { |match| 
-    match.chomp
-    keys = keys + text.scan(/@.*?\{(#{match}.*?),/i)
-  }
-  keys.uniq!
-  keys.sort!
-  return keys
-end
-
-strings=VIM::evaluate('a:partkey')
 File.open(bib) { |file|
-    mytext = file.read
-    mykeys = extractcitekeys(strings,mytext)
-	puts mykeys.join(" ")
+	text = file.read
+	keys = []
+	keys = keys + text.scan(/@.*?\{(#{string}.*?),/i)
+	keys.uniq!
+	keys.sort!
+	results = keys.join(" ")
+	VIM::command('let myres = "' "#{results}" '"')
 }
 EOL
-
+return myres
 endfunction
 
 set omnifunc=Pandoc_Complete
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Commands that call Pandoc
 "
 " ## Simple Commands
 "
 " Markdown tidy with hard wraps
-" (Note: this will insert an empty title block if no title block is present)
+" (Note: this will insert an empty title block if no title block 
+" is present)
 
 	:command! MarkdownTidyWrap %!pandoc -t markdown -s
 
 " Markdown tidy without hard wraps
-" (Note: this will insert an empty title block if no title block is present)
+" (Note: this will insert an empty title block if no title block 
+" is present)
 
 	:command! MarkdownTidy %!pandoc -t markdown --no-wrap -s
 
@@ -229,14 +240,19 @@ set omnifunc=Pandoc_Complete
 "
 " # Some suggested <Leader> mappings
 "
-" It is bad form to put <Leader> mappings in ftplugins. Here are the mappings I
-" have in my .vimrc. If you like them, you can either copy them to your vimrc
-" or uncomment them here.
+" It is bad form to put <Leader> mappings in ftplugins. If you want to enable
+" these mappings, put something like
+" 
+"   let g:PandocLeaders = 1
 "
-"map <silent> <Leader>html :MarkdownHtmlOpenpd<CR>
-"map <silent> <LEADER>pdf :MarkdownPdfCiteOpenpd<CR>
-"map <silent> <LEADER>odt :MarkdownOdtCiteOpenpd<CR>
+" in your .vimrc. Or just copy any you are interested in using into your vimrc.
 "
+if exists('g:PandocLeaders') 
+
+	map <silent> <Leader>html :MarkdownHtmlOpenpd<CR>
+	map <silent> <LEADER>pdf :MarkdownPdfCiteOpenpd<CR>
+	map <silent> <LEADER>odt :MarkdownOdtCiteOpenpd<CR>
+
 " While I'm at it, here are a few more functions mappings that are useful when
 " editing pandoc files.
 "
@@ -244,38 +260,41 @@ set omnifunc=Pandoc_Complete
 "
 " (This isn't very pandoc-specific, but I use it in the next mapping below.)
 "
-"ruby << EOF
-"  def open_uri
-"    re = %r{(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))}
+ruby << EOF
+	  def open_uri
+		re = %r{(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))}
 
-"    line = VIM::Buffer.current.line
+		line = VIM::Buffer.current.line
 
-"    if url = line[re]
-"      system("open", url)
-"      VIM::message(url)
-"    else
-"      VIM::message("No URI found in line.")
-"    end
-"  end
-"EOF
+		if url = line[re]
+		  system("open", url)
+		  VIM::message(url)
+		else
+		  VIM::message("No URI found in line.")
+		end
+	  end
+EOF
 
-"if !exists("*OpenURI")
-"  function! OpenURI()
-"    :ruby open_uri
-"  endfunction
-"endif
-"map <Leader>w :call OpenURI()<CR>
+	if !exists("*OpenURI")
+	  function! OpenURI()
+		:ruby open_uri
+	  endfunction
+	endif
+
+	map <Leader>www :call OpenURI()<CR>
 
 "" Open reference link in browser (depends on above mapping of <LEADER>w)
-"map <Leader>wr ya[#<LEADER>w*
+	map <Leader>wr ya[#<LEADER>www*
 
 "" Jump forward to existing reference link (or footnote link)
-"map <Leader>fr ya[#E
+	map <Leader>fr ya[#E
 
 "" Jump back to existing reference link (or fn link)
-"map <Leader>br {jwya[*E
+	map <Leader>br {jwya[*E
 
 "" Add new reference link (or footnote link) after current paragraph. (This
 "" works better than the snipmate snippet for doing this.)
 
-"map <Leader>nr ya[o<CR><ESC>p$a:
+	map <Leader>nr ya[o<CR><ESC>p$a:
+
+endif
