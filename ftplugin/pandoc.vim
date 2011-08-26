@@ -184,63 +184,21 @@ let b:SuperTabNoCompleteAfter = ['\s', '^\s*\(-\|\*\|+\|>\|:\)', '^\s*(\=\d\+\(\
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " # Commands that call Pandoc
 "
-" ## Simple Commands
+" ## Tidying Commands
 "
 " Markdown tidy with hard wraps
 " (Note: this will insert an empty title block if no title block 
-" is present)
+" is present; it will wipe out any latex macro definitions)
 
 	:command! MarkdownTidyWrap %!pandoc -t markdown -s
 
 " Markdown tidy without hard wraps
 " (Note: this will insert an empty title block if no title block 
-" is present)
+" is present; it will wipe out any latex macro definitions)
 
 	:command! MarkdownTidy %!pandoc -t markdown --no-wrap -s
 
 " ## Complex commands
-
-" Two options here: commands the rely on an external wrapper script, "pd", and
-" commands that don't.
-"
-" ### Commands that rely on "pd"
-"
-" I've written a bash wrapper script, "pd", which can be found here:
-"
-" 	https://gist.github.com/857619
-"
-" "pd" provides some shortcuts for common tasks, an easy way to
-" set default conversion options. For details, read the comments in the
-" script or try `pd help`.
-"
-" The advantage of calling "pd" here rather than pandoc is that you can
-" set all your defaults once, and the conversions are available both in
-" vim and from the cli.
-"
-" Below are some commands I use regularly. It should be easy to expand this
-" list to suit your needs.
-"
-" Generate html (will be saved as filename.html)
-
-	:command! MarkdownHtmlpd	!pd html %
-
-" Generate html and open in default html viewer
-
-	:command! MarkdownHtmlOpenpd !pd html open %
-
-" Generate pdf using citeproc and open in default pdf viewer
-
-	:command! MarkdownPdfCiteOpenpd !pd bib pdf open %
-
-" Generate odt using citeproc and open in default odt viewer
-
-	:command! MarkdownOdtCiteOpenpd !pd bib odt open %
-
-" ### Commands that call pandoc directly
-"
-" Here are three more complicated pandoc commands that don't rely on pd. The
-" advantage is that you don't need to provide those external scripts. The
-" disadvantage is that you have to manage all the cli options here.
 "
 " Note that these commands depend on OS X's "open" command. Linux users will
 " want to rewrite them to use the "xdg-open" command.
@@ -256,7 +214,7 @@ let b:SuperTabNoCompleteAfter = ['\s', '^\s*\(-\|\*\|+\|>\|:\)', '^\s*(\=\d\+\(\
 " Generate odt and open in default odt viewer
 
 	:command! MarkdownOdtOpen !out="%";out="${out\%.*}.odt";pandoc -t odt -sS -o "$out" %;open "$out"
-"
+
 " # Some suggested <Leader> mappings
 "
 " It is bad form to put <Leader> mappings in ftplugins. If you want to enable
@@ -268,9 +226,9 @@ let b:SuperTabNoCompleteAfter = ['\s', '^\s*\(-\|\*\|+\|>\|:\)', '^\s*(\=\d\+\(\
 "
 if exists('g:PandocLeaders') 
 
-	map <silent> <Leader>html :MarkdownHtmlOpenpd<CR>
-	map <silent> <LEADER>pdf :MarkdownPdfCiteOpenpd<CR>
-	map <silent> <LEADER>odt :MarkdownOdtCiteOpenpd<CR>
+	map <silent> <Leader>html :MarkdownHtmlOpen<CR>
+	map <silent> <LEADER>pdf :MarkdownPdfCiteOpen<CR>
+	map <silent> <LEADER>odt :MarkdownOdtCiteOpen<CR>
 
 " While I'm at it, here are a few more functions mappings that are useful when
 " editing pandoc files.
