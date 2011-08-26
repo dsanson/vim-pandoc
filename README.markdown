@@ -51,15 +51,40 @@ Here are some key features:
 	-    pandoc-powered tidying up
 	-    other little tweaks along these lines
 
-+	Enables syntax highlighting.
+Specifically:
 
-+	Provides some snippets for use with snipMate.
+	setlocal formatoptions=1
+	setlocal linebreak
+	nnoremap <buffer> j gj
+	nnoremap <buffer> k gk
+	vnoremap <buffer> j gj
+	vnoremap <buffer> k gk
+	setlocal display=lastline
+	setlocal nojoinspaces
+	setlocal commentstring=<!--%s-->
+	setlocal comments=s:<!--,m:\ \ \ \ ,e:-->
 
-+   Enables folding of ATX style sections.
+Additional tweaks welcome. Feedback also welcome on whether this is
+appropriate. It would be easy to make some or all of this optional.
 
-+   Provides autocompletion of citations (more info below).
++	Syntax highlighting with support for definition lists, numbered
+    examples, delimited code blocks, LaTeX and HTML, citations,
+    footnotes, ....
 
-+	Provides some simple pandoc-powered conversion functions.
++	Some snippets for use with snipMate (I never use these, so they
+    could probably use improvement. If you improve them, let me know).
+
++   Folding of ATX styled sections. (See `:help fold-commands` if
+    you haven't used vim's folding before.). Quick tips:
+
+	+   `za` toggles folds open and closed (`zA` toggles fold and
+		all its children open and closed)
+    +   `zc` closes a fold (`zC` closes it and all its children)
+    +	`zo` opens a fold (`zO` opens it and all its children).
+
++   Autocompletion of citations (more details below).
+
++	Some simple pandoc-powered conversion and tidying functions.
 
 ftplugin/pandoc.vim is fairly well-commented. Take a look at it to see
 what it does in detail.
@@ -112,22 +137,36 @@ Regular expressions work too!
 should suggest both '@leftow1990' and '@lewis1990', assuming
 those are both keys in your bibliography.
 
-This also works well with [SuperTab]. I have the following in my 
-vimrc:
+The plugin also provides support for using this with [SuperTab]. I have the following in my vimrc:
 
     let g:SuperTabDefaultCompletionType = "context"
 
-With this setting, I can just hit TAB to autocomplete.
+With this setting, I can just hit TAB in the middle of typing
+a citation to autocomplete the citation. 
+
+> **KNOWN BUG**: For some reason, SuperTab autocompletion of
+> citations only works after I use ctrl-x ctrl-o autocompletion
+> once within a given file.
 
 [SuperTab]: http://www.vim.org/scripts/script.php?script_id=1643
 
+> TODO: I'd like to pandoc.vim to be smarter about finding
+> bibliography files. This includes:
+> 
+> +   searching for bibtex files in the working directory
+> +   finding the local texmf tree programatically
+> +   using (all?) bibtex files found in any of the search
+>     paths.
+> +   better support for other bibliography database 
+>     formats (the parser currently works with bibtex and 
+>     MODS xml files, but the script doesn't look for MODS
+>     xml files.
 
 Dictionary-Based Citation Completions
 -------------------------------------
 
-I am leaving this in, but now that proper autocompletion is 
-working, I'll probably get rid of it eventually. If you create
-a text file,
+I am leaving this in for now, but now that proper autocompletion is 
+working, I'll probably get rid of it. If you create a text file,
 
     ~/.pandoc/citationkeys.dict
 
@@ -144,23 +183,19 @@ these citekeys are added to vim's dictionary, allowing for autocompletion by typ
 
     @adams19
 
-and then hitting ctrl-x ctrl-k.
-
-Folding
--------
-
-This plugin enables folding at ATX style sections. If you have 
-never used folding in vim before, take a look at `:help fold-commands`.
-If you want to get your feet wet, put yourself inside a section
-(with ATX style headers), and try typing `za`, which toggles folds 
-open and closed.
+and then hitting ctrl-x ctrl-k (or via SuperTab).
 
 Conversion and Tidying Up
 -------------------------
 
-You really need to look at the comments in ftpugin/pandoc.vim to
+Look at the comments in ftpugin/pandoc.vim to
 see what is there. I've made no attempt to provide a complete
-set of commands. Currently, the conversion commands come in two flavors. The first flavor depends on [an external wrapper script](https://gist.github.com/857619). The second flavor of commands call pandoc directly. I plan to remove the commands that depend on the external wrapper script at some point. 
+set of commands. Currently, the conversion commands come in two flavors. The first flavor depends on [an external wrapper script](https://gist.github.com/857619). The second flavor of commands call pandoc directly. I plan to remove the commands that depend on the external wrapper script at some point.
+
+Also, the plugin sets
+
+    setlocal equalprg=pandoc\ -t\ markdown\ --no-wrap
+ 
 
 Leader Mappings
 ---------------
@@ -171,9 +206,9 @@ If you define `g:PandocLeaders` in your vimrc,
 
 then the plugin will define some leader mappings for you. The ones I use the most are
 
-    ,pdf
-	,odt
-	,html
+    <leader>pdf
+	<leader>odt
+	<leader>html
 
 which convert the buffer to the relevant format and open the results.
 
