@@ -266,8 +266,8 @@ hi link pdcHRule		Underlined
 hi link pdcListItem		Operator
 hi link pdcDefinitions		Operator
 
-hi pdcEmphasis	gui=italic
-hi pdcStrong  	gui=bold
+hi pdcEmphasis  htmlItalic	
+hi pdcStrong  	htmlBold
 hi link pdcSubscript		Special
 hi link pdcSuperscript		Special
 hi link pdcStrikeout	 	Special
