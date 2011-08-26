@@ -1,5 +1,3 @@
-This is no longer current. Please use the plugin available from:
+# Vim Bundle for Pandoc
 
-https://github.com/vim-pandoc/vim-pandoc
-
-instead.
+Development has moved to <https://github.com/vim-pandoc/vim-pandoc>. Please update your links.
