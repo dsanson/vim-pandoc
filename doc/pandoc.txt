@@ -1,27 +1,18 @@
 *pandoc.txt*                                         Pandoc Vim Plugin
 *pandoc*
 
-*MarkdownTidy*
-*MarkdownTidyWrap*
-*MarkdownHtmlOpen*
-*MarkdownPdfOpen*
-*MarkdownOdtOpen*
-
-*PandocLeaders*
-*PandocBibfile*
-
-
 # Pandoc for Vim
 
 This is a bundle of pandoc-related stuff that I've thrown together for
 my own use. I don't really know what I am doing, so use at your own
-risk!
+risk! If you make any changes or improvements, let me know.
 
-I need to convert this documentation into a vim help file (someone want
-to write a vim-help writer module for pandoc?) For now, the
-documentation is here, and in the heavily commented ftplugin/pandoc.vim
-file. I encourage you to read through that file before using this
-plugin.
+This documentation is only nominally formatted as a vim help
+file; really it is just markdown with a few vim help file tags between
+asterisks. (Someone want to write a vim-help writer module for pandoc?) 
+
+I'd recommend that, in addition to reading this help file, you take
+a look at the heavily commented ftplugin/pandoc.vim file.
 
 ## Known Gotchas
 
@@ -127,6 +118,9 @@ So, for example, I have this in my vimrc:
 
 ## Citation Autocompletion
 
+*pandoc-citation-completion* *PandocBibfile*
+
+
 If you have a bibtex file (or a symlink to a bibtex file) named
 'default.bib' in one of these folders,
 
@@ -209,6 +203,9 @@ and then hitting ctrl-x ctrl-k (or via SuperTab).
 
 ## Conversion and Tidying Up
 
+*MarkdownTidy* *MarkdownTidyWrap* *MarkdownHtmlOpen* *MarkdownPdfOpen*
+*MarkdownOdtOpen*
+
 Look at the comments in ftpugin/pandoc.vim to see what is there. I've
 made no attempt to provide a complete set of commands. The more I use
 vim, the less inclined I am to provide basic conversion commands, since
@@ -243,6 +240,8 @@ filtering them with `=`.
 Advice welcome on how to work around these problems.
 
 ## Leader Mappings
+
+*pandoc-leader-mappings* *PandocLeaders*  
 
 If you define `g:PandocLeaders` in your vimrc,
 
