@@ -37,7 +37,7 @@ setlocal nojoinspaces
 " blocks...)
 "
 
-setlocal equalprg=pandoc\ -t\ markdown\ --no-wrap
+setlocal equalprg=pandoc\ -t\ markdown\ --reference-links
 
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
