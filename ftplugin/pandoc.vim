@@ -119,6 +119,7 @@ function! Pandoc_Complete(findstart, base)
 endfunction
 
 function! Pandoc_BibComplete(regexp)
+
 	if !exists('g:PandocBibfile')
 		if filereadable($HOME . '/.pandoc/default.bib')
 			let g:PandocBibfile = $HOME . '/.pandoc/default.bib'
@@ -129,13 +130,9 @@ function! Pandoc_BibComplete(regexp)
 		else
 			return []
 		endif
-
 	endif
 
-	let bibdata = "/Users/david/.pandoc/default.bib"
-
 	let res = split(Pandoc_BibKey(a:regexp))
-
 	return res
 
 endfunction
@@ -160,6 +157,28 @@ return myres
 endfunction
 
 setlocal omnifunc=Pandoc_Complete
+
+if exists('g:SuperTabCompletionContexts')
+  let b:SuperTabCompletionContexts =
+    \ ['PandocContext'] + g:SuperTabCompletionContexts
+  function! PandocContext()
+		" return the starting position of the word
+	let line = getline('.')
+	let pos = col('.') - 1
+	while pos > 0 && line[pos - 1] !~ '\\\|{\|\[\|<\|\s\|@\|\^'
+		let pos -= 1
+	endwhile
+	if line[pos - 1] == "@"
+		return "\<c-x>\<c-o>"
+	endif
+  endfunction
+endif
+"
+" disable supertab completions after bullets and numbered list
+" items (since one commonly types something like `+<tab>` to 
+" create a list.)
+"
+let b:SuperTabNoCompleteAfter = ['\s', '^\s*\(-\|\*\|+\|>\|:\)', '^\s*(\=\d\+\(\.\=\|)\=\)'] 
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
