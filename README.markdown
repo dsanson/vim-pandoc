@@ -4,7 +4,8 @@ This is a bundle of pandoc-related stuff that I've thrown together for
 my own use. I don't really know what I am doing, so use at your own
 risk!
 
-I need to write real vim-style documentation. For now, the documentation
+I need to convert this documentation into a vim help file (someone want
+to write a vim-help writer module for pandoc?) For now, the documentation
 is here, and in the heavily commented ftplugin/pandoc.vim file. I
 encourage you to read through that file before using this plugin.
 
