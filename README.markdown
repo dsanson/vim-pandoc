@@ -99,16 +99,25 @@ vimrc:
 	(a MODs file should also work), then that file will be used
 	for citation autocompletion.
 
+So, for example, one might put something like this in your vimrc:
+
+    let g:PandocBibfile = "/Users/david/Documents/mybib.xml"
+
 +	g:PandocLeaders. If this variable exists, then this plugin 
 	will go ahead and define some leader mappings.
+
+So, for example, I have this in my vimrc:
+
+    let g:PandocLeaders = 1
+
 
 Citation Autocompletion
 -----------------------
 
 If you have a bibtex file (or a symlink to a bibtex file)
-named 'default.bib' in
+named 'default.bib' in one of these folders,
 
-    ~/.pandoc/default.bib
+    ~/.pandoc
     ~/Library/texmf/bibtex/bib
     ~/texmf/bibtex/bib
 
@@ -123,44 +132,48 @@ To use autocompletion, start typing a citekey, e.g.,
 
     @geac
 
-and then, while still in insert mode, hit ctrl-X ctrl-O (vim's 
+and then, while still in insert mode, hit ctrl-x ctrl-o (vim's 
 shortcut for omnicompletion), and you'll get a popup window with
 a list of matching keys, e.g.,
 
     @geach1970
     @geach1972
 
-Regular expressions work too!
+Regular expressions work too (but not with SuperTab for some reason):
 
     @le.*90
 
 should suggest both '@leftow1990' and '@lewis1990', assuming
 those are both keys in your bibliography.
 
-The plugin also provides support for using this with [SuperTab]. I have the following in my vimrc:
+The plugin also provides support for using this with [SuperTab]. I 
+have the following in my vimrc:
 
     let g:SuperTabDefaultCompletionType = "context"
 
 With this setting, I can just hit TAB in the middle of typing
 a citation to autocomplete the citation. 
 
-> **KNOWN BUG**: For some reason, SuperTab autocompletion of
-> citations only works after I use ctrl-x ctrl-o autocompletion
-> once within a given file.
-
 [SuperTab]: http://www.vim.org/scripts/script.php?script_id=1643
 
-> TODO: I'd like to pandoc.vim to be smarter about finding
+> **KNOWN BUGS**:
+> 
+> +  SuperTab autocompletion of citations only works after I use
+> ctrl-x ctrl-o autocompletion once within a given file.
+> +  Regular expressions don't work when using SuperTab.
+
+> **TODO**: I'd like to pandoc.vim to be smarter about finding
 > bibliography files. This includes:
 > 
-> +   searching for bibtex files in the working directory
 > +   finding the local texmf tree programatically
 > +   using (all?) bibtex files found in any of the search
 >     paths.
+> +   including the directory that the file is in among the
+>     search paths 
 > +   better support for other bibliography database 
 >     formats (the parser currently works with bibtex and 
 >     MODS xml files, but the script doesn't look for MODS
->     xml files.
+>     xml files).
 
 Dictionary-Based Citation Completions
 -------------------------------------
