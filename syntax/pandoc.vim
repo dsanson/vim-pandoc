@@ -1,29 +1,12 @@
 " Vim syntax file
 " Language:	Pandoc (superset of Markdown)
-" Maintainer:	Jeremy Schultz <taozhyn@gmail.com>
-" HackedUpBy:	David Sanson
-" GreatlyImprovedBy:	Felipe Morales
-" Version:	2.2
-" Changes:
-"
-" 2011-08-25 (David Sanson)
-"   - Merged in a bunch of fixes by Felipe Morales and Wei Dai
-"
-" 2011-06-24 (Felipe Morales)
-"   - Fixed footnotes and links, and added support for citations.
-"
-" 2011-06-13
-" 	- Separate patterns for **strong** and *emphasis* 
-" 	- Enabled bold and italic display (thanks to Dirk Laurie for
-" 	  help withi this.) Note that my favorite fixed width font, 
-" 	  Monaco, doesn't support italics :-(
-"
-" 2011-03-05 (David Sanson)	
-"	- Added support for Numbered Examples
-"
+" Maintainer: David Sanson <dsanson@gmail.com> 	
+" Maintainer: Felipe Morales 
+" OriginalAuthor: Jeremy Schultz <taozhyn@gmail.com>
+" Version: 3.0
 " Remark:	Uses HTML and TeX syntax file
 " 
-"
+
 if version < 600
   syntax clear
 elseif exists("b:current_syntax")
@@ -249,7 +232,8 @@ syn match pdcPCite /@\w*\s\[.\{-}\]/
 
 """""""""""""""""""""""""""""""""""""""
 " Newline, 2 spaces at the end of line means newline
-syn match pdcNewLine /  $/
+" (commenting out because this seems to slow things down)
+" syn match pdcNewLine /  $/
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Highlight groups
